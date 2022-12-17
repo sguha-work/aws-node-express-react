@@ -1,0 +1,32 @@
+service: aws-node-express-api-project
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: us-east-1
+  timeout: 19
+  environment:
+    DB_USER: angshu_mongo
+    DB_PASSWORD: HhWjjsZoi1wDqZkj
+    DB_URL: cluster0.1f9ag.mongodb.net
+
+functions:
+  # api:
+  #   handler: handler.handler
+  #   events:
+  #     - httpApi: '*'
+  fetchAllUsers:
+    handler: handler.default
+    events:
+      - http:
+          path: /users/
+          method: get
+          cors: true
+
+package:
+  individually: true
+
+plugins:
+  - serverless-offline
+

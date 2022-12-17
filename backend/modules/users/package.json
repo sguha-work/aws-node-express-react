@@ -1,0 +1,16 @@
+{
+  "name": "aws-node-express-api-project",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^6.8.0",
+    "mongoose-patcher": "^0.3.0",
+    "serverless-http": "^2.7.0",
+    "source-map-support": "^0.5.21"
+  },
+  "devDependencies": {
+    "serverless-offline": "^12.0.2"
+  }
+}
