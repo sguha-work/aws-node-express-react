@@ -1,5 +1,6 @@
 import DBService from './db_service.js';
 import * as UserModel from './../models/user_model.js';
+const UM = UserModel.default; 
 class UserService {
     classInstance = null;
     constructor() {
@@ -11,33 +12,27 @@ class UserService {
         }
         return this.classInstance;
     }
-    findAllUser() {
-        return new Promise(async (resolve, reject) => {
-            try {
-                await this.dbService.connect('user');
-                const result = await this.dbService.find(UserModel.default);
-                resolve(result);
-            } catch (error) {
-                reject(error);
-            } finally {
-                this.dbService.disConnect();
-            }
-        });
+    async findAllUser() {
+        try {
+            await this.dbService.connect('user');
+            const result = await this.dbService.find(UserModel.default);
+            this.dbService.disConnect();
+            return Promise.resolve(result);
+        } catch (error) {
+            return Promise.reject(error);
+        }
     }
 
-    createUser({ name, phonenumber, address, sex }) {
-        return new Promise(async (resolve, reject) => {
-            try {
-                await this.dbService.connect('user');
-                const user = new UserModel({ name, phonenumber, address, sex });
-                const result = await this.dbService.save(user);
-                resolve(result);
-            } catch (error) {
-                reject(error);
-            } finally {
-                this.dbService.disConnect();
-            }
-        });
+    async createUser({ name, phonenumber, address, sex }) {
+        try {
+            await this.dbService.connect('user');
+            const user = new UM({ name, phonenumber, address, sex });
+            const result = await this.dbService.save(user);
+            this.dbService.disConnect();
+            return Promise.resolve(result);
+        } catch (error) {
+            return Promise.reject(error);
+        }
     }
 }
 export default UserService;

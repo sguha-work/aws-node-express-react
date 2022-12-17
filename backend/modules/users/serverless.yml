@@ -23,6 +23,13 @@ functions:
           path: /users/
           method: get
           cors: true
+  createUser:
+    handler: handler.default
+    events:
+      - http:
+          path: /users/
+          method: post
+          cors: true
 
 package:
   individually: true

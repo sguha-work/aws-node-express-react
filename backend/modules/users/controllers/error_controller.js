@@ -8,5 +8,17 @@ class ErrorHandler {
     }
     handle(error) {
         let response = {};
+        if(error.code) {
+            response.status = error.code;
+        } else {
+            response.status = 500;
+        }
+        if(error.message) {
+            response.message = error.message;
+        } else {
+            response.message = "Internal server error";
+        }
+        return response;
     }
 }
+export default ErrorHandler;

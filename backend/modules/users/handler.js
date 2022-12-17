@@ -3,20 +3,19 @@ import serverless from 'serverless-http';
 import express from 'express';
 import bodyParser from 'body-parser';
 import UserController from "./controllers/user_controller.js";
+import ErrorHandler from './controllers/error_controller.js';
+const eh = ErrorHandler.getInstance();
 const app = express();
 app.use(bodyParser.json());
-
+const userController = UserController.instance();
 app.get("/users", async (req, res, next) => {
-  const userController = UserController.instance();
   try {
     const users = await userController.findAllUsers();
     return res.status(200).json({
       data: users,
     });
   } catch (error) {
-    responseObj.status = error.code ? error.code : 500;
-    response.message = error.message ? error.message : "Error occured in code";
-    response.send(responseObj);
+    response.send(eh.handle(error));
   }
 });
 app.post("/users", async (request, response) => {// create, create new teacher
@@ -30,9 +29,7 @@ app.post("/users", async (request, response) => {// create, create new teacher
     responseObj.data = result;
     response.send(responseObj);
   } catch (error) {
-    responseObj.status = error.code ? error.code : 500;
-    response.message = error.message ? error.message : "Error occured in code";
-    response.send(responseObj);
+    response.send(eh.handle(error));
   }
 });
 
