@@ -21,7 +21,7 @@ class UserController {
         });
     }
 
-    createUser({ name, phonenumber, address, photo, sex }) {
+    createUser({ name, phonenumber, address, sex }) {
         return new Promise(async (resolve, reject) => {
             try {
                 const result = await this.userService.createUser({ name, phonenumber, address, sex });

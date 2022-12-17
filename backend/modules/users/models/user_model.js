@@ -17,4 +17,4 @@ let schema = new Schema({
 
 // If no path is given, all date fields will be applied
 schema.plugin(patcher);
-export default mongoose.model("user", schema);
+export default mongoose.model("users", schema);

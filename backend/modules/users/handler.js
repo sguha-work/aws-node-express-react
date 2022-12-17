@@ -1,26 +1,39 @@
 //const serverless = require("serverless-http");
 import serverless from 'serverless-http';
 import express from 'express';
-const app = express();
+import bodyParser from 'body-parser';
 import UserController from "./controllers/user_controller.js";
+const app = express();
+app.use(bodyParser.json());
 
-// app.get("/", (req, res, next) => {
-//   return res.status(200).json({
-//     message: "Hello from root!",
-//   });
-// });
-
-// app.get("/hello", (req, res, next) => {
-//   return res.status(200).json({
-//     message: "Hello from path!",
-//   });
-// });
 app.get("/users", async (req, res, next) => {
   const userController = UserController.instance();
-  const users = await userController.findAllUsers();
-  return res.status(200).json({
-    data: users,
-  });
+  try {
+    const users = await userController.findAllUsers();
+    return res.status(200).json({
+      data: users,
+    });
+  } catch (error) {
+    responseObj.status = error.code ? error.code : 500;
+    response.message = error.message ? error.message : "Error occured in code";
+    response.send(responseObj);
+  }
+});
+app.post("/users", async (request, response) => {// create, create new teacher
+  let responseObj = {};
+  responseObj.status = 201;
+  responseObj.data = {};
+  responseObj.message = '';
+  try {
+    console.log(request.body);
+    const result = await userController.createUser(request.body);
+    responseObj.data = result;
+    response.send(responseObj);
+  } catch (error) {
+    responseObj.status = error.code ? error.code : 500;
+    response.message = error.message ? error.message : "Error occured in code";
+    response.send(responseObj);
+  }
 });
 
 app.use((req, res, next) => {
