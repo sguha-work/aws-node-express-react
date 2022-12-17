@@ -21,6 +21,7 @@ class DBService {
             try {
                 await mongoose.connect(this.connectionString(DBName)); // await on a step makes process to wait until it's done/ err'd out.
                 this.db = mongoose.connection;
+                console.log('db connectionn established');
                 resolve(this.db);
             } catch (error) {
                 reject(error);
@@ -36,45 +37,51 @@ class DBService {
         }
     }
 
-    find(dataModel, query = {}) {
-        return new Promise(async (resolve, reject) => {
-            if (
-                typeof dataModel.find === "undefined" ||
-                typeof dataModel.find !== "function"
-            ) {
-                reject({
-                    message: "Not a valid data model",
-                });
-            } else {
-                try {
-                    const response = await dataModel.find(query);
-                    resolve(response);
-                } catch (err) {
-                    reject({
-                        message: err.message,
-                        status: err.code === 11000 ? 409 : 500,
-                    });
+    async find(dataModel, query, limit = 10, sort = "createdAt", order = "desc", page = 1) {
+        if (
+            typeof dataModel.find === "undefined" ||
+            typeof dataModel.find !== "function"
+        ) {
+            return Promise.reject({
+                message: "Not a valid data model",
+            });
+        } else {
+            try {
+                let sortObj = {};
+                sortObj[sort] = order;
+                let docs;
+                if (limit !== 0) {
+                    page = page - 1;
+                    docs = await dataModel.find(query).sort(sortObj).limit(limit).skip(limit * page);
+                } else {
+                    docs = await dataModel.find(query).sort(sortObj);
                 }
+                return Promise.resolve(docs);
+            } catch (err) {
+                return Promise.reject({
+                    message: err.message,
+                    status: err.code === 11000 ? 409 : 500,
+                });
             }
-        });
+        }
     }
 
-    save(dataModel) {
-        return new Promise(async (resolve, reject) => {
-            if (typeof dataModel.save === "undefined" || typeof dataModel.save !== "function") {
-                reject({
-                    message: "Not a valid data model",
-                });
-            } else {
-                try {
-                    let dbResp = await dataModel.save();
-                    resolve(dbResp);
-                } catch (err) {
-                    console.log(err);
-                    reject({ message: err.message, status: (err.code === 11000) ? 409 : 500 });
-                }
+
+    async save(dataModel) {
+        if (typeof dataModel.save === "undefined" || typeof dataModel.save !== "function") {
+            return Promise.reject({
+                message: "Not a valid data model",
+            });
+        } else {
+            try {
+                let dbResp = await dataModel.save();
+                return Promise.resolve(dbResp);
+            } catch (err) {
+                console.log(err);
+                return Promise.reject({ message: err.message, status: (err.code === 11000) ? 409 : 500 });
             }
-        });
+        }
+
     }
 
     findAndDelete(dataModel, query = {}) {

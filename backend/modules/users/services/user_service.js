@@ -12,10 +12,10 @@ class UserService {
         }
         return this.classInstance;
     }
-    async findAllUser() {
+    async get({query, limit = 10, sort = "createdAt", order = "desc", page = 1}) {
         try {
             await this.dbService.connect('user');
-            const result = await this.dbService.find(UserModel.default);
+            const result = await this.dbService.find(UM);
             this.dbService.disConnect();
             return Promise.resolve(result);
         } catch (error) {
@@ -23,7 +23,7 @@ class UserService {
         }
     }
 
-    async createUser({ name, phonenumber, address, sex }) {
+    async create({ name, phonenumber, address, sex }) {
         try {
             await this.dbService.connect('user');
             const user = new UM({ name, phonenumber, address, sex });

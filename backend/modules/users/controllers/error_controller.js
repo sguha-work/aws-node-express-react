@@ -7,6 +7,7 @@ class ErrorHandler {
         return this.instance;
     }
     handle(error) {
+        console.error(error);
         let response = {};
         if(error.code) {
             response.status = error.code;

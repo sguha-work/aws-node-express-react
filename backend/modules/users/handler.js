@@ -7,11 +7,11 @@ import ErrorHandler from './controllers/error_controller.js';
 const eh = ErrorHandler.getInstance();
 const app = express();
 app.use(bodyParser.json());
-const userController = UserController.instance();
-app.get("/users", async (req, res, next) => {
+const userController = UserController.instance;
+app.get("/users", async (request, response, next) => {
   try {
-    const users = await userController.findAllUsers();
-    return res.status(200).json({
+    const users = await userController.get(request.query);
+    return response.status(200).json({
       data: users,
     });
   } catch (error) {
@@ -25,7 +25,7 @@ app.post("/users", async (request, response) => {// create, create new teacher
   responseObj.message = '';
   try {
     console.log(request.body);
-    const result = await userController.createUser(request.body);
+    const result = await userController.create(request.body);
     responseObj.data = result;
     response.send(responseObj);
   } catch (error) {
