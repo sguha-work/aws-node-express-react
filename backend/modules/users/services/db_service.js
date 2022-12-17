@@ -84,27 +84,25 @@ class DBService {
 
     }
 
-    findAndDelete(dataModel, query = {}) {
-        return new Promise(async (resolve, reject) => {
+    async findAndDelete(dataModel, query = {}) {
             if (
                 typeof dataModel.delete === "undefined" ||
                 typeof dataModel.find !== "function"
             ) {
-                reject({
+                return Promise.reject({
                     message: "Not a valid data model",
                 });
             } else {
                 try {
                     const response = await dataModel.find(query).remove();
-                    resolve(response);
+                    return Promise.resolve(response);
                 } catch (err) {
-                    reject({
+                    return Promise.reject({
                         message: err.message,
                         status: err.code === 11000 ? 409 : 500,
                     });
                 }
             }
-        });
     }
 }
 export default DBService;
