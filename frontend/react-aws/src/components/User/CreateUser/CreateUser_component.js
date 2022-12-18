@@ -1,4 +1,4 @@
-import CreateUserForm from "./CreateUserForm_component.js";
+import CreateUserForm from "../CreateUserForm/CreateUserForm_component.js";
 import "./CreateUser_component.css";
 function CreateUser() {
     return (

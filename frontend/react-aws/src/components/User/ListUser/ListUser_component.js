@@ -1,4 +1,4 @@
-import UserTable from "./UserTable_component";
+import UserTable from "../UserTable/UserTable_component.js";
 import "./ListUser_component.css";
 function ListUser() {
     return (

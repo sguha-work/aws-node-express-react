@@ -1,5 +1,5 @@
-import CreateUser from "../../components/User/CreateUser_component";
-import ListUser from "../../components/User/ListUser_component";
+import CreateUser from "../../components/User/CreateUser/CreateUser_component.js";
+import ListUser from "../../components/User/ListUser/ListUser_component.js";
 import "./User_page.css";
 function User() {
     return (
