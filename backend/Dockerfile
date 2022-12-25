@@ -17,3 +17,4 @@ RUN npm install
 
 EXPOSE 3000
 CMD [ "sls", "offline" ]
+#docker run -p 3000:3000 -d sguha1988/aws-node-express-sls-api
