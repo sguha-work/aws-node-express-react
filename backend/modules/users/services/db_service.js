@@ -11,7 +11,7 @@ class DBService {
         return this.classInstance;
     }
     connectionString(dbName = 'test') {
-        const connectionString = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_URL}/${dbName}?authSource=admin&replicaSet=atlas-gfk4y7-shard-0&readPreference=primary&ssl=true`;
+        const connectionString = `mongodb+srv://angshu_mongo:HhWjjsZoi1wDqZkj@cluster0.1f9ag.mongodb.net/bwUsers?authSource=admin&replicaSet=atlas-gfk4y7-shard-0&readPreference=primary&ssl=true`;
         console.log(connectionString);
         return connectionString;
     }
