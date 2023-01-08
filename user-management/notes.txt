@@ -1,0 +1,5 @@
+To prevent simulatenous click and server call we have use
+Debouncing or throttling
+
+Debouncing-> This will consider the last click and discard all previous clicks
+Throttling-> After the first click it will disable the event for a certain period of time
