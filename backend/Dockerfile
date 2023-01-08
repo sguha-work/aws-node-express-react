@@ -1,7 +1,5 @@
-FROM node:18
+FROM public.ecr.aws/lambda/nodejs:16
 
-RUN npm -g config set user root
-RUN npm -g install serverless
 # Create app directory
 WORKDIR /usr/src/modules
 
@@ -15,6 +13,6 @@ WORKDIR /usr/src/modules/users
 
 RUN npm install
 
-EXPOSE 3000
 CMD [ "sls", "offline" ]
+EXPOSE 3000
 #docker run -p 3000:3000 -d sguha1988/aws-node-express-sls-api
